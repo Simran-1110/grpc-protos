@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package user.v1;
+
+option java_multiple_files = true;
+option java_package = "com.nuclei.user.v1.services";
+option java_outer_classname = "UserServiceProto";
+import "user/v1/user_message.proto";
+
+/**
+ * List of RPCs for managing user profiles.
+ */
+service UserService {
+  // Rpc to be called to create a new user profile.
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+
+  // Rpc to be called to get a user's details by their unique ID.
+  rpc GetUserById(GetUserByIdRequest) returns (GetUserByIdResponse);
+
+  // Rpc to be called to update an existing user's profile.
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+
+  // Rpc to be called to delete a user profile from the system.
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+
+  // Rpc to be called to get a paginated list of users.
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
