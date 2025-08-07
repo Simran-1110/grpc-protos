@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+package user.v1;
+
+option java_multiple_files = true;
+option java_package = "com.nuclei.user.v1.messages";
+option java_outer_classname = "UserMessageProto";
+
+/**
+* enum containing user roles.
+*/
+enum UserRole {
+  DUMMY_USER_ROLE = 0;
+  USER = 1;
+  ADMIN = 2;
+  SUPER_ADMIN = 3;
+}
+
+/**
+* enum containing gender types.
+*/
+enum Gender {
+  DUMMY_GENDER = 0;
+  MALE = 1;
+  FEMALE = 2;
+  OTHER = 3;
+}
+
+/**
+* User message, it contains user details.
+* This represents the core User entity in the system.
+*/
+message User {
+  // The unique identifier for the user, typically a UUID.
+  string id = 1;
+  // User's full name.
+  string full_name = 2;
+  // User's unique email address.
+  string email = 3;
+  // User's phone number.
+  string phone = 4;
+  // User's gender.
+  Gender gender = 5;
+  // The role assigned to the user, determining their permissions.
+  UserRole role = 6;
+}
+
+/**
+* Request for CreateUser api.
+* Contains all the necessary fields to create a new user.
+*/
+message CreateUserRequest {
+  string full_name = 1;
+  string email = 2;
+  string phone = 3;
+  Gender gender = 4;
+  UserRole role = 5;
+}
+
+/**
+* Response for CreateUser api.
+* Returns the newly created user object, including its generated ID.
+*/
+message CreateUserResponse {
+  User user = 1;
+}
+
+/**
+* Request for GetUserById api.
+*/
+message GetUserByIdRequest {
+  // The unique ID of the user to retrieve.
+  string id = 1;
+}
+
+/**
+* Response for GetUserById api.
+* Returns the full user object if found.
+*/
+message GetUserByIdResponse {
+  User user = 1;
+}
+
+/**
+* Request for UpdateUser api.
+* Contains the fields to update for an existing user.
+*/
+message UpdateUserRequest {
+  // The unique ID of the user to be updated.
+  string id = 1;
+  // The new full name for the user.
+  string full_name = 2;
+  // The new email for the user.
+  string email = 3;
+  // The new phone number for the user.
+  string phone = 4;
+  // The new gender for the user.
+  Gender gender = 5;
+  // The new role for the user.
+  UserRole role = 6;
+}
+
+/**
+* Response for UpdateUser api.
+* Returns the complete user object with updated values.
+*/
+message UpdateUserResponse {
+  User user = 1;
+}
+
+/**
+* Request for DeleteUser api.
+*/
+message DeleteUserRequest {
+  // The unique ID of the user to be deleted.
+  string id = 1;
+}
+
+/**
+* Response for DeleteUser api.
+* Confirms the outcome of the delete operation.
+*/
+message DeleteUserResponse {
+  // Returns true if the deletion was successful.
+  bool success = 1;
+}
+
+/**
+* Request for ListUsers api.
+* Used to fetch a paginated list of users, with optional filters.
+*/
+message ListUsersRequest {
+  // The page number to retrieve for pagination (e.g., starts from 1).
+  int32 page = 1;
+  // The maximum number of users to return per page.
+  int32 page_size = 2;
+  // Optional filter to return only users with a specific role.
+  UserRole role_filter = 3;
+}
+
+/**
+* Response for ListUsers api.
+* Provides a paginated list of users along with pagination metadata.
+*/
+message ListUsersResponse {
+  // The list of users for the requested page.
+  repeated User users = 1;
+  // The total number of users matching the filter criteria across all pages.
+  int32 total = 2;
+  // The current page number being returned.
+  int32 page = 3;
+  // The number of users per page, as requested.
+  int32 page_size = 4;
+}
