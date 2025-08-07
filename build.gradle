@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.9.4'
+    id 'maven-publish'
+}
+
+group = 'com.nuclei' // Change to your actual group
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Protobuf runtime only; stub generation is not used here
+    implementation 'com.google.protobuf:protobuf-java:3.19.1'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.19.1'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {} // Enable only if you want generated Java code
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir 'src/main/proto'
+        }
+        java {
+            // Optional: uncomment below only if Java classes are generated
+            // srcDirs += 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = project.group
+            artifactId = 'central-proto' // Customize if needed
+            version = project.version
+        }
+    }
+
+    repositories {
+        // Example: GitHub, Nexus, JitPack, etc.
+        maven {
+            name = "myRepo"
+            url = uri("https://maven.pkg.github.com/Simran-1110/grpc-protos")
+            credentials {
+                username = project.findProperty("repoUsername") ?: ""
+                password = project.findProperty("repoPassword") ?: ""
+            }
+        }
+    }
+}
