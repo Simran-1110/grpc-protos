@@ -89,15 +89,15 @@ message UpdateUserRequest {
   // The unique ID of the user to be updated.
   string id = 1;
   // The new full name for the user.
-  string full_name = 2;
+  optional string full_name = 2;
   // The new email for the user.
-  string email = 3;
+  optional string email = 3;
   // The new phone number for the user.
-  string phone = 4;
+  optional string phone = 4;
   // The new gender for the user.
-  Gender gender = 5;
+  optional Gender gender = 5;
   // The new role for the user.
-  UserRole role = 6;
+  optional UserRole role = 6;
 }
 
 /**
